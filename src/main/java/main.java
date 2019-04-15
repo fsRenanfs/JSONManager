@@ -4,18 +4,22 @@ import java.io.*;
 public class main {
     public static void main(String[] args) throws IOException {
         JsonManager jsonManager = new JsonManager();
-        FileManager fileManager = new FileManager();
-        String inputFile = args[0], outputFile = args[1];
+        String command = args[0];
+        String inputFile = args[1], outputFile = args[2];
 
-        //Convert JSON to XML
-        if (inputFile.contains(".json")) {
-            String xml = jsonManager.jsonToXML(inputFile);
-            fileManager.saveFile(outputFile, xml);
-        }
-        //Convert XML to JSON
-        else if (inputFile.contains(".xml")) {
-            String json = jsonManager.XMLtoJson(inputFile);
-            fileManager.saveFile(outputFile, json);
+        switch (command.toUpperCase()) {
+            //Convert XML to JSON
+            case "--XML":
+                jsonManager.XMLtoJson(inputFile, outputFile);
+                break;
+            //Convert JSON to XML
+            case "--JSON":
+                jsonManager.jsonToXML(inputFile, outputFile);
+                break;
+            default:
+                error("Informe o tipo de arquivo a ser convertido: " +
+                        "\n--JSON convert to JSON to XML" +
+                        "\n--XML convert XML to JSON");
         }
     }
 

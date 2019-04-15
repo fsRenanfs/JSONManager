@@ -24,19 +24,21 @@ public class JsonManager {
         }
     }
 
-    public String jsonToXML(String filePath) throws IOException {
+    public void jsonToXML(String filePath, String outputPath) throws IOException {
+        FileManager fileManager = new FileManager();
         //Read JSON file
-        String json = new FileManager().getFileString(filePath);
+        String json = fileManager.getFileString(filePath);
         //Set object org.json lib
         JSONObject newjobj = new JSONObject(json);
-        //Return XML
-        return XML.toString(newjobj);
+        //save XML file
+        fileManager.saveFile(outputPath, XML.toString(newjobj));
     }
 
-    public String XMLtoJson(String filePath) throws IOException {
+    public void XMLtoJson(String filePath, String outputPath) throws IOException {
+        FileManager fileManager = new FileManager();
         //Read XML file
         String xml = new FileManager().getFileString(filePath);
-        //Return JSON
-        return XML.toJSONObject(xml).toString();
+        //save JSON file
+        fileManager.saveFile(outputPath, XML.toJSONObject(xml).toString());
     }
 }
