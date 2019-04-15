@@ -1,30 +1,22 @@
-import Person.Person;
-import com.google.gson.Gson;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.io.*;
 
 public class main {
     public static void main(String[] args) throws IOException {
         JsonManager jsonManager = new JsonManager();
         FileManager fileManager = new FileManager();
-        String inputPath = "files" + File.separator + "input" + File.separator;
-        String outputPath = "files" + File.separator + "output" + File.separator;
-
-        //Get Json Info
-        Person person = jsonManager.getJsonInfo(inputPath + "Person.json", Person.class);
-        System.out.println(person.getPersonInfo());
-
+        String inputFile = args[0], outputFile = args[1];
 
         //Convert JSON to XML
-        String xml = jsonManager.jsonToXML(inputPath + "PersonToConvert.json");
-        fileManager.saveFile(outputPath + "newPerson.xml", xml);
-
+        if (inputFile.contains(".json")) {
+            String xml = jsonManager.jsonToXML(inputFile);
+            fileManager.saveFile(outputFile, xml);
+        }
         //Convert XML to JSON
-        String json = jsonManager.XMLtoJson(inputPath + "nfe.xml");
-        fileManager.saveFile(outputPath + "NewNFe.json", json);
+        else if (inputFile.contains(".xml")) {
+            String json = jsonManager.XMLtoJson(inputFile);
+            fileManager.saveFile(outputFile, json);
+        }
     }
 
     public static void error(String message) {

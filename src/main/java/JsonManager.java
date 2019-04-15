@@ -1,11 +1,8 @@
-import Person.Person;
+
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.json.XML;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.io.*;
 import java.lang.reflect.Type;
 
@@ -16,11 +13,10 @@ public class JsonManager {
     public <T> T getJsonInfo(String filePath, Class<T> auxClass) {
         try {
             //Read Json file
-            JsonReader jsonReader = Json.createReader(new InputStreamReader(new FileInputStream(new File(filePath))));
-            JsonObject jobj = jsonReader.readObject();
+            String json = new FileManager().getFileString(filePath);
 
             //Cast Json Info in class
-            return new Gson().fromJson(jobj.toString(), (Type) auxClass);
+            return new Gson().fromJson(json, (Type) auxClass);
 
         } catch (Exception e) {
             main.error(e.getMessage());
@@ -28,30 +24,19 @@ public class JsonManager {
         }
     }
 
-    public String jsonToXML(String filePath) throws FileNotFoundException {
-        String xml;
-
-        //Read Json
-        JsonReader jsonReader = Json.createReader(new InputStreamReader(new FileInputStream(new File(filePath))));
-        //Set object
-        JsonObject jobj = jsonReader.readObject();
+    public String jsonToXML(String filePath) throws IOException {
+        //Read JSON file
+        String json = new FileManager().getFileString(filePath);
         //Set object org.json lib
-        JSONObject newjobj = new JSONObject(jobj.toString());
+        JSONObject newjobj = new JSONObject(json);
         //Return XML
-        xml = XML.toString(newjobj);
-
-        return xml;
+        return XML.toString(newjobj);
     }
 
     public String XMLtoJson(String filePath) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(new File(filePath)));
-        String line, json, xml = "";
-
-        while ((line = br.readLine()) != null)
-            xml += line;
-        br.close();
-        json = XML.toJSONObject(xml).toString();
-
-        return json;
+        //Read XML file
+        String xml = new FileManager().getFileString(filePath);
+        //Return JSON
+        return XML.toJSONObject(xml).toString();
     }
 }
